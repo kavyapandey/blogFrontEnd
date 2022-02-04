@@ -5,7 +5,7 @@ import "./sidebar.css";
 import { Context } from "../../context/Context";
 export default function Sidebar() {
   const {user} = useContext(Context);
-  const PF = "http://localhost:5000/images/"
+  const PF = "https://blogcreator-backend.herokuapp.com/images/"
 
 
   return (
