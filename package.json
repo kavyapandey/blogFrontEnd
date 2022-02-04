@@ -38,5 +38,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "https://blogcreator-backend.herokuapp.com/api/"
+  "proxy": "https://blogcreator-backend.herokuapp.com/"
 }
