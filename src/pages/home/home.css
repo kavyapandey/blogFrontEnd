@@ -1,0 +1,7 @@
+.home{
+    display: flex;
+}
+html{
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+}
