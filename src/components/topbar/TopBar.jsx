@@ -13,7 +13,7 @@ export default function TopBar() {
   useEffect(() => {
     let isMounted = true;   
     const getCats = async () => {
-      const res = await axios.get("/categories");
+      const res = await axios.get("https://blogcreator-backend.herokuapp.com/api/categories");
       if(isMounted)
       setCats(res.data);
      
