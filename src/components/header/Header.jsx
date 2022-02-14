@@ -2,7 +2,7 @@ import "./header.css";
 
 export default function Header() {
   return (
-    <div className="header">
+    <div className="header container-fluid">
       <div className="headerTitles">
         <span className="headerTitleLg">.Story</span>
       </div>

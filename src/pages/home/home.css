@@ -5,3 +5,37 @@ html{
     overflow-x: hidden;
     scroll-behavior: smooth;
 }
+*[data-tooltip] {
+    position: relative;
+}
+
+*[data-tooltip]::after {
+    content: attr(data-tooltip);
+
+    position: absolute;
+    top: 42px;
+    right: -20px;
+    width: 100px;
+
+    pointer-events: none;
+    opacity: 0;
+    -webkit-transition: opacity .15s ease-in-out;
+    -moz-transition: opacity .15s ease-in-out;
+    -ms-transition: opacity .15s ease-in-out;
+    -o-transition: opacity .15s ease-in-out;
+    transition: opacity .15s ease-in-out;
+
+    display: block;
+    font-size: 12px;
+    line-height: 16px;
+    text-align: center;
+    background: #dfc0bbe1;
+    padding: 2px 2px;
+    border: 1px solid #dfc0bbf6;
+    border-radius: 5px;
+    box-shadow: 2px 4px 5px rgba(238, 230, 230, 0.4);
+}
+
+*[data-tooltip]:hover::after {
+    opacity: 1;
+}

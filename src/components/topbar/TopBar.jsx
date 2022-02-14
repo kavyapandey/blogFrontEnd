@@ -26,7 +26,7 @@ export default function TopBar() {
     dispatch({ type: "LOGOUT" });
   };
   return (
-    <div className="top">
+    <div className="top topmedia">
       <div className="topLeft">
       <div className="topListItem">
             <Link className="link" to="/">
@@ -45,9 +45,11 @@ export default function TopBar() {
       </div>
       <div className="topRight">
         {user ? (
+          <div data-tooltip="Settings">
           <Link to="/settings">
             <img className="topImg" src={PF+user.profilePic} alt="" />
           </Link>
+          </div>
         ) : (
           <ul className="topList">
             <li className="topListItem">
@@ -62,12 +64,12 @@ export default function TopBar() {
             </li>
           </ul>
         )}
-        <div className="">
+        <div data-tooltip="Write a blog">
             <Link className="link" to="/write">
               {user && <img className="topbaricons" src="../writeIcon.png"/>}
             </Link>
           </div>
-          <div className="" onClick={handleLogout}>
+          <div data-tooltip="Logout" onClick={handleLogout}>
             {user && <img className="topbaricons" src="../logout.png"/>}
           </div>
       </div>

@@ -64,3 +64,10 @@
   margin-left: 10px;
   cursor: pointer;
 }
+@media(max-width:750px) {
+.topmedia{
+  float: none;
+    display: block;
+    text-align: left;
+}
+}
