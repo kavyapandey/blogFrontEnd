@@ -1,7 +1,8 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import "./write.css";
 import axios from "axios";
 import { Context } from "../../context/Context";
+import Spinner from 'react-spinner-material';
 
 export default function Write() {
   const [title, setTitle] = useState("");
@@ -9,34 +10,53 @@ export default function Write() {
   const [categories, setCat] = useState("Lifestyle");
   const [file, setFile] = useState(null);
   const { user } = useContext(Context);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const newPost = {
-      username: user.username,
-      title,
-      desc,
-      categories
-    };
-    if (file) {
-      const data =new FormData();
-      const filename = Date.now() + file.name;
-      data.append("name", filename);
-      data.append("file", file);
-      newPost.photo = filename;
-      try {
-        await axios.post("https://blogcreator-backend.herokuapp.com/api/upload", data);
-      } catch (err) {}
-    }
-    try {
+  const[showLoader,setShowLoader]=useState(false);
+ const newPost = {
+  username: user.username,
+  title,
+  desc,
+  categories
+};
+    
+  const uploadImage = async(base64EncodedImage)=>{
+   
+    try{
+      const res = await axios.post(`https://blogcreator-backend.herokuapp.com/api/upload`,{
+        data: base64EncodedImage
+      })
+      console.log("data.photo",res.data.photo)
+     
+      newPost.photo = res.data.photo; 
+       try {
       const res = await axios.post("https://blogcreator-backend.herokuapp.com/api/posts", newPost);
       window.location.replace("/post/" + res.data._id);
+      setShowLoader(false)
     } catch (err) {
       console.log(err);
     }
+    }catch(err){
+console.log(err)
+    }
+
+  }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setShowLoader(true)
+   
+    if (file) {
+      const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onloadend = () => {
+            uploadImage(reader.result);
+        };
+    }
+
+  
+   
   };
   return (
     <div className="write">
+       
       {file && (
         <img className="writeImg" src={URL.createObjectURL(file)} alt="" />
       )}
@@ -59,6 +79,9 @@ export default function Write() {
             onChange={e=>setTitle(e.target.value)}
           />
         </div>
+        {showLoader? <div style={{width:"15%",margin:"auto",top:"100px",padding:"50px"}}>
+        <Spinner radius={80} color={"#DFC0BB"} stroke={5} visible={true} />
+      </div> : <div></div>}
         <div className="writeFormGroup">
           <textarea
             placeholder="Tell your story..."
@@ -70,6 +93,7 @@ export default function Write() {
         <select className="categories dropdown-menu"
         value={categories.selectValue} 
         onChange={e=>setCat(e.target.value)}
+        style={{display:"block"}}
          
       >
        <option value="Lifestyle">Lifestyle</option>
@@ -83,6 +107,7 @@ export default function Write() {
           Publish
         </button>
       </form>
+     
     </div>
   );
 }

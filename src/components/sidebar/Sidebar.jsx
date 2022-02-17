@@ -5,7 +5,7 @@ import "./sidebar.css";
 import { Context } from "../../context/Context";
 export default function Sidebar() {
   const {user} = useContext(Context);
-  const PF = "https://blogcreator-backend.herokuapp.com/images/"
+
 
 
   return (
@@ -14,7 +14,7 @@ export default function Sidebar() {
         <span className="sidebarTitle">ABOUT AUTHOR</span>
         <img
        style={{width : "210px"}}
-        src={PF+user.profilePic}
+        src={user.profilePic}
           alt=""
         />
         <p>

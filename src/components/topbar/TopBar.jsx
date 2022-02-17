@@ -7,7 +7,7 @@ import "./topbar.css";
 
 export default function TopBar() {
   const { user, dispatch } = useContext(Context);
-  const PF = "https://blogcreator-backend.herokuapp.com/images/"
+  
   const [cats, setCats] = useState([]);
 
   useEffect(() => {
@@ -47,7 +47,7 @@ export default function TopBar() {
         {user ? (
           <div data-tooltip="Settings">
           <Link to="/settings">
-            <img className="topImg" src={PF+user.profilePic} alt="" />
+            <img className="topImg" src={user.profilePic} alt="" />
           </Link>
           </div>
         ) : (

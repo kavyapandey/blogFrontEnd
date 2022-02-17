@@ -10,10 +10,31 @@ export default function Settings() {
   const [password, setPassword] = useState("");
   const [about, setAbout] = useState("");
   const [success, setSuccess] = useState(false);
+  const [photoURL,setPhotoURL]=useState(null);
 
   const { user, dispatch } = useContext(Context);
-  const PF = "https://blogcreator-backend.herokuapp.com/images/"
 
+  const uploadImage = async(base64EncodedImage)=>{
+    try {
+     await fetch( 'https://blogcreator-backend.herokuapp.com/api/upload',
+         {
+     
+         method: 'POST',
+         body: JSON.stringify({ data: base64EncodedImage }),
+         headers: { 'Content-Type': 'application/json' },
+     }).then((response) => { 
+         response.json().then((data) => {
+       setPhotoURL(data.photo)
+           
+       }).catch((err) => {
+           console.log(err);
+       }) 
+  
+     });
+} catch (err) {
+     console.error(err);
+ }
+  }
   const handleSubmit = async (e) => {
     e.preventDefault();
     dispatch({ type: "UPDATE_START" });
@@ -25,17 +46,17 @@ export default function Settings() {
       about
     };
     if (file) {
-      const data = new FormData();
-      const filename = Date.now() + file.name;
-      data.append("name", filename);
-      data.append("file", file);
-      updatedUser.profilePic = filename;
-      try {
-        await axios.post("https://blogcreator-backend.herokuapp.com/api/upload", data);
-      } catch (err) {}
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onloadend = () => {
+          uploadImage(reader.result);
+      };
+   
+     
     }
+    updatedUser.profilePic = photoURL;
     try {
-      const res = await axios.put("https://blogcreator-backend.herokuapp.com/api/users/" + user._id, updatedUser);
+      const res = await axios.put("http://localhost:5000/api/users/" + user._id, updatedUser);
       setSuccess(true);
       dispatch({ type: "UPDATE_SUCCESS", payload: res.data });
     } catch (err) {
@@ -53,7 +74,7 @@ export default function Settings() {
           <label>Profile Picture</label>
           <div className="settingsPP">
             <img
-              src={file ? URL.createObjectURL(file) : PF+user.profilePic}
+              src={file ? URL.createObjectURL(file) : user.profilePic}
               alt=""
             />
             <label htmlFor="fileInput">
@@ -106,7 +127,7 @@ export default function Settings() {
         <span className="sidebarTitle">ABOUT AUTHOR</span>
         <img
        style={{width : "210px"}}
-        src={PF+user.profilePic}
+        src={user.profilePic}
           alt=""
         />
         <p>

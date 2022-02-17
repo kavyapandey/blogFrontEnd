@@ -9,13 +9,13 @@ export default function SinglePost() {
   const location = useLocation();
   const path = location.pathname.split("/")[2];
   const [post, setPost] = useState({});
-  const PF = "https://blogcreator-backend.herokuapp.com/images/";
   const { user } = useContext(Context);
   const [title, setTitle] = useState("");
   const [display,setDisplay] = useState(false)
   const [authorpic,setAuthorPic] = useState("");
   const [authorAbout, setAuthorAbout] = useState("");
   const [desc, setDesc] = useState("");
+ 
   const [updateMode, setUpdateMode] = useState(false);
 
   useEffect(() => {
@@ -61,7 +61,7 @@ export default function SinglePost() {
     <div className="singlePost">
       <div className="singlePostWrapper">
         {post.photo && (
-          <img src={PF + post.photo} alt="" className="singlePostImg" />
+          <img src={post.photo} alt="" className="singlePostImg" />
         )}
         {updateMode ? (
           <input
@@ -122,7 +122,7 @@ export default function SinglePost() {
         <span className="sidebarTitle">ABOUT AUTHOR</span>
         <img
        style={{width : "210px"}}
-        src={display && PF+authorpic}
+        src={display && authorpic}
           alt=""
         />
         {display &&  <p>
